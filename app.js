@@ -3,23 +3,23 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const errorController = require('./controllers/error');
+
 const app = express();
-
-const errorControll = require('./controllers/error')
-
-const adminData = require('./routes/admin');
-const usersRoutes = require('./routes/users');
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.use('/admin', adminData);
-app.use(usersRoutes);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(errorControll.get404)
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
-app.listen(5000);
+app.use(errorController.get404);
+
+app.listen(3000);
+
